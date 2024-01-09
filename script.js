@@ -140,3 +140,83 @@ function writePassword() {
 
 // Add event listener to generate button
 generateBtn.addEventListener('click', writePassword);
+
+
+// Function to prompt user for password options
+function getPasswordOptions() {
+  var length = parseInt(prompt("Enter the length of the password (between 8 and 128):"));
+
+  // Validate the length input
+  if (isNaN(length) || length < 8 || length > 128) {
+    alert("Please enter a valid password length between 8 and 128.");
+    return null;
+  }
+
+  var includeLowercase = confirm("Include lowercase characters?");
+  var includeUppercase = confirm("Include uppercase characters?");
+  var includeNumeric = confirm("Include numeric characters?");
+  var includeSpecial = confirm("Include special characters?");
+
+  // Validate that at least one character type is selected
+  if (!includeLowercase && !includeUppercase && !includeNumeric && !includeSpecial) {
+    alert("Please select at least one character type.");
+    return null;
+  }
+
+  return {
+    length: length,
+    includeLowercase: includeLowercase,
+    includeUppercase: includeUppercase,
+    includeNumeric: includeNumeric,
+    includeSpecial: includeSpecial
+  };
+}
+
+// Function for getting a random element from an array
+function getRandom(arr) {
+  var randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+
+// Function to generate password with user input
+function generatePassword() {
+  var options = getPasswordOptions();
+
+  if (!options) {
+    return "";
+  }
+
+  var possibleChars = [];
+  var guaranteedChars = [];
+
+  if (options.includeLowercase) {
+    possibleChars = possibleChars.concat(lowerCasedCharacters);
+    guaranteedChars.push(getRandom(lowerCasedCharacters));
+  }
+
+  if (options.includeUppercase) {
+    possibleChars = possibleChars.concat(upperCasedCharacters);
+    guaranteedChars.push(getRandom(upperCasedCharacters));
+  }
+
+  if (options.includeNumeric) {
+    possibleChars = possibleChars.concat(numericCharacters);
+    guaranteedChars.push(getRandom(numericCharacters));
+  }
+
+  if (options.includeSpecial) {
+    possibleChars = possibleChars.concat(specialCharacters);
+    guaranteedChars.push(getRandom(specialCharacters));
+  }
+
+  // Fill the rest of the password with random characters
+  for (var i = guaranteedChars.length; i < options.length; i++) {
+    var randomChar = getRandom(possibleChars);
+    guaranteedChars.push(randomChar);
+  }
+
+  // Shuffle the guaranteed characters to ensure they appear in random order
+  guaranteedChars = guaranteedChars.sort(() => Math.random() - 0.5);
+
+  return guaranteedChars.join("");
+}
