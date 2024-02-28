@@ -59,6 +59,6 @@ GitHub: m-maha21
 
 ## Tools
 
-The tools that I have used in project are: Advanced JavaScript, CSS, HTML
+The tools that I have used in this project are: Advanced JavaScript, CSS, HTML
 
 
